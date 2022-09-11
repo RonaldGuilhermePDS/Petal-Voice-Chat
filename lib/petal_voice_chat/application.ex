@@ -14,6 +14,8 @@ defmodule PetalVoiceChat.Application do
       PetalVoiceChatWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: PetalVoiceChat.PubSub},
+      # Start our Presence module.
+      PetalVoiceChatWeb.Presence,
       # Start the Endpoint (http/https)
       PetalVoiceChatWeb.Endpoint
       # Start a worker by calling: PetalVoiceChat.Worker.start_link(arg)
