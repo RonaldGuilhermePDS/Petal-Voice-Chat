@@ -20,7 +20,7 @@ defmodule PetalVoiceChatWeb.Router do
     get "/", PageController, :index
   end
 
-  scope "/room", PetalVoiceChatWeb do
+  scope "/room", PetalVoiceChatWeb, as: :room do
     pipe_through :browser
 
     live "/new", Room.NewLive, :new
