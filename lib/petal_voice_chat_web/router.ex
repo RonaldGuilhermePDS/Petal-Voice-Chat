@@ -20,6 +20,13 @@ defmodule PetalVoiceChatWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/room", PetalVoiceChatWeb do
+    pipe_through :browser
+
+    live "/new", Room.NewLive, :new
+    live "/:slug", Room.ShowLive, :show
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", PetalVoiceChatWeb do
   #   pipe_through :api
