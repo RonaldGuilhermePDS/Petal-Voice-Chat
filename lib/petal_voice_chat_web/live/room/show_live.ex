@@ -21,6 +21,9 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
         <li><%= uuid %></li>
       <% end %>
     </ul>
+
+    <video id="local-video" playsinline autoplay muted width="600"></video>
+    <button class="button" phx-hook="JoinCall">Join Call</button>
     """
   end
 
