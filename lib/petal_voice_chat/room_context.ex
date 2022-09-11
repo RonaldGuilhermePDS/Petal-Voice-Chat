@@ -4,8 +4,8 @@ defmodule PetalVoiceChat.RoomContext do
   """
 
   import Ecto.Query, warn: false
-  alias PetalVoiceChat.Repo
 
+  alias PetalVoiceChat.Repo
   alias PetalVoiceChat.RoomContext.Room
 
   @doc """
@@ -35,7 +35,10 @@ defmodule PetalVoiceChat.RoomContext do
       ** (Ecto.NoResultsError)
 
   """
-  def get_room!(id), do: Repo.get!(Room, id)
+  def get_room(slug) when is_binary(slug) do
+    from(room in Room, where: room.slug == ^slug)
+    |> Repo.one()
+  end
 
   @doc """
   Creates a room.
