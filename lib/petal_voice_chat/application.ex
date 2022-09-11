@@ -17,7 +17,9 @@ defmodule PetalVoiceChat.Application do
       # Start our Presence module.
       PetalVoiceChatWeb.Presence,
       # Start the Endpoint (http/https)
-      PetalVoiceChatWeb.Endpoint
+      PetalVoiceChatWeb.Endpoint,
+      # Start the Stun
+      PetalVoiceChatWeb.Stun
       # Start a worker by calling: PetalVoiceChat.Worker.start_link(arg)
       # {PetalVoiceChat.Worker, arg}
     ]

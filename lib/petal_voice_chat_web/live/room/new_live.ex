@@ -1,6 +1,6 @@
 defmodule PetalVoiceChatWeb.Room.NewLive do
   @moduledoc """
-    A LiveView for creating and joining chat rooms.
+      A LiveView for creating and joining chat rooms.
   """
 
   use PetalVoiceChatWeb, :live_view
