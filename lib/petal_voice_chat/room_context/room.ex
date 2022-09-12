@@ -1,4 +1,7 @@
 defmodule PetalVoiceChat.RoomContext.Room do
+  @moduledoc """
+    A module to create room context
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,7 +12,6 @@ defmodule PetalVoiceChat.RoomContext.Room do
     timestamps()
   end
 
-  @doc false
   def changeset(room, attrs) do
     room
     |> cast(attrs, [:title, :slug])
@@ -26,5 +28,6 @@ defmodule PetalVoiceChat.RoomContext.Room do
       |> String.replace(" ", "-")
     end)
   end
+
   defp format_slug(changeset), do: changeset
 end

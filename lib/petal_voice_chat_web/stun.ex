@@ -1,4 +1,7 @@
 defmodule PetalVoiceChatWeb.Stun do
+  @moduledoc """
+    A module to stablish media connection between peers for VoIP
+  """
   use GenServer
 
   def start_link(_) do

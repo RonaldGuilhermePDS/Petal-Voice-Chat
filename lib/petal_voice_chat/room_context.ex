@@ -28,10 +28,10 @@ defmodule PetalVoiceChat.RoomContext do
 
   ## Examples
 
-      iex> get_room!(123)
+      iex> get_room(123)
       %Room{}
 
-      iex> get_room!(456)
+      iex> get_room(456)
       ** (Ecto.NoResultsError)
 
   """
