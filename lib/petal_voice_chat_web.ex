@@ -98,6 +98,9 @@ defmodule PetalVoiceChatWeb do
       import PetalVoiceChatWeb.ErrorHelpers
       import PetalVoiceChatWeb.Gettext
       alias PetalVoiceChatWeb.Router.Helpers, as: Routes
+
+      # Import Petal Components
+      use PetalComponents
     end
   end
 
