@@ -26,7 +26,9 @@ config :petal_voice_chat, PetalVoiceChatWeb.Endpoint,
   secret_key_base: "+7/kURf2YoY5Hmst7qnmHyFL4FisbmtR2+t1G0hyJeDtI8XH69h+nCLDyk/1mljm",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    # Enable Tailwind CSS Watcher
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

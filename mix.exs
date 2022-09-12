@@ -51,6 +51,8 @@ defmodule PetalVoiceChat.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:uuid, "~> 1.1" },
       {:stun, "~> 1.2.5"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:petal_components, "~> 0.17"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
@@ -63,11 +65,11 @@ defmodule PetalVoiceChat.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["deps.get", "ecto.setup", "cmd --cd assets npm install"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
 end
