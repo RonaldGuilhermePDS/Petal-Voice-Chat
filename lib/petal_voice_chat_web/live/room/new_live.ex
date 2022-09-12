@@ -10,18 +10,7 @@ defmodule PetalVoiceChatWeb.Room.NewLive do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <h1>Create a New Room</h1>
-    <div>
-      <%= form_for @changeset, "#", [phx_change: "validate", phx_submit: "save"], fn f -> %>
-        <%= text_input f, :title, placeholder: "Title" %>
-        <%= error_tag f, :title %>
-        <%= text_input f, :slug, placeholder: "room-slug" %>
-        <%= error_tag f, :slug %>
-        <%= submit "Save" %>
-      <% end %>
-    </div>
-    """
+    Phoenix.View.render(PetalVoiceChatWeb.PageView, "new_live.html", assigns)
   end
 
   @impl true
