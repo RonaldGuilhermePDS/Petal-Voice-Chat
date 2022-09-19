@@ -1,40 +1,58 @@
-<h1><%= @room.title %></h1>
-<h3>Connected Users:</h3>
-<ul>
-  <%= for uuid <- @connected_users do %>
-    <li><%= uuid %></li>
-  <% end %>
-</ul>
+<div class="flex bg-slate-900 h-screen justify-center items-center">
 
-<div>
-  <video id="local-video" playsinline autoplay muted width="600"></video>
-  <%= for uuid <- @connected_users do %>
-  <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser"></video>
-  <% end %>
-</div>
+  <div class="flex bg-slate-800 rounded-sm">
 
-<button phx-hook="JoinCall" phx-click="join_call">Join Call</button>
+    <div class="p-4">
+      <h1 class="text-white text-center font-semibold"><%= @room.title %></h1>
+      <h3 class="text-white font-semibold">Users:</h3>
+      <ul>
+        <%= for uuid <- @connected_users do %>
+          <li class="text-white"><%= uuid %></li>
+        <% end %>
+      </ul>
 
-<div id="offer-requests">
-  <%= for request <- @offer_requests do %>
-  <span phx-hook="HandleOfferRequest" data-from-user-uuid="<%= request.from_user.uuid %>"></span>
-  <% end %>
-</div>
+      <button phx-hook="JoinCall" phx-click="join_call" class="bg-purple-700 shadow-md shadow-purple-700 w-1/2 h-12 rounded-md mt-2 text-white">Join Call</button>
+    </div>
 
-<div id="sdp-offers">
-  <%= for sdp_offer <- @sdp_offers do %>
-  <span phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"></span>
-  <% end %>
-</div>
+    <div>
+      <div class="flex-col bg-slate-700 m-2 rounded-sm">
+        <h1 class="text-white text-center py-2 font-semibold">Your Webcam</h1>
+        <video id="local-video" playsinline autoplay muted width="500" class="p-2 rounded-sm"></video>
+      </div>
 
-<div id="sdp-answers">
-  <%= for answer <- @answers do %>
-  <span phx-hook="HandleAnswer" data-from-user-uuid="<%= answer["from_user"] %>" data-sdp="<%= answer["description"]["sdp"] %>"></span>
-  <% end %>
-</div>
+      <div class="flex-col bg-slate-700 m-2 rounded-sm">
+        <h1 class="text-white text-center py-2 font-semibold">Users Webcam</h1>
+        <div class="flex">
+          <%= for uuid <- @connected_users do %>
+            <video id="video-remote-<%= uuid %>" width="250" muted data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser" class="p-2 rounded-sm"></video>
+          <% end %>
+        </div>
+      </div>
 
-<div id="ice-candidates">
-  <%= for ice_candidate_offer <- @ice_candidate_offers do %>
-  <span phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"></span>
-  <% end %>
+      <div id="offer-requests">
+        <%= for request <- @offer_requests do %>
+        <span phx-hook="HandleOfferRequest" data-from-user-uuid="<%= request.from_user.uuid %>"></span>
+        <% end %>
+      </div>
+
+      <div id="sdp-offers">
+        <%= for sdp_offer <- @sdp_offers do %>
+        <span phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"></span>
+        <% end %>
+      </div>
+
+      <div id="sdp-answers">
+        <%= for answer <- @answers do %>
+        <span phx-hook="HandleAnswer" data-from-user-uuid="<%= answer["from_user"] %>" data-sdp="<%= answer["description"]["sdp"] %>"></span>
+        <% end %>
+      </div>
+
+      <div id="ice-candidates">
+        <%= for ice_candidate_offer <- @ice_candidate_offers do %>
+        <span phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"></span>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
 </div>
