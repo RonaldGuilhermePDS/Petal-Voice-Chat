@@ -14,16 +14,10 @@ defmodule PetalVoiceChatWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PetalVoiceChatWeb do
+  scope "/", PetalVoiceChatWeb, as: :room do
     pipe_through :browser
 
-    get "/", PageController, :index
-  end
-
-  scope "/room", PetalVoiceChatWeb, as: :room do
-    pipe_through :browser
-
-    live "/new", Room.NewLive, :new
+    live "/", Room.NewLive, :new
     live "/:slug", Room.ShowLive, :show
   end
 
