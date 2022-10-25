@@ -11,12 +11,10 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
   alias PetalVoiceChatWeb.Presence
   alias Phoenix.Socket.Broadcast
 
-  @impl true
   def render(assigns) do
     Phoenix.View.render(PetalVoiceChatWeb.PageView, "show_live.html", assigns)
   end
 
-  @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     user = create_connected_user()
     Phoenix.PubSub.subscribe(PetalVoiceChat.PubSub, "room:" <> slug)
@@ -47,7 +45,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     end
   end
 
-  @impl true
   def handle_info(%Broadcast{event: "presence_diff"}, socket) do
     {:noreply,
       socket
@@ -87,14 +84,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     {:noreply, socket}
   end
 
-  def handle_info(%Broadcast{event: "request_offers", payload: request}, socket) do
-    {:noreply,
-      socket
-      |> assign(:offer_requests, socket.assigns.offer_requests ++ [request])
-    }
-  end
-
-  @impl true
   def handle_event("new_ice_candidate", payload, socket) do
     payload = Map.merge(payload, %{"from_user" => socket.assigns.user.uuid})
 
@@ -102,7 +91,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     {:noreply, socket}
   end
 
-  @impl true
   def handle_event("new_sdp_offer", payload, socket) do
     payload = Map.merge(payload, %{"from_user" => socket.assigns.user.uuid})
 
@@ -110,7 +98,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     {:noreply, socket}
   end
 
-  @impl true
   def handle_event("new_answer", payload, socket) do
     payload = Map.merge(payload, %{"from_user" => socket.assigns.user.uuid})
 
@@ -118,7 +105,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     {:noreply, socket}
   end
 
-  @impl true
   def handle_info(%Broadcast{event: "new_ice_candidate", payload: payload}, socket) do
     {:noreply,
       socket
@@ -126,7 +112,6 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     }
   end
 
-  @impl true
   def handle_info(%Broadcast{event: "new_sdp_offer", payload: payload}, socket) do
     {:noreply,
       socket
@@ -134,11 +119,17 @@ defmodule PetalVoiceChatWeb.Room.ShowLive do
     }
   end
 
-  @impl true
   def handle_info(%Broadcast{event: "new_answer", payload: payload}, socket) do
     {:noreply,
       socket
       |> assign(:answers, socket.assigns.answers ++ [payload])
+    }
+  end
+
+  def handle_info(%Broadcast{event: "request_offers", payload: request}, socket) do
+    {:noreply,
+      socket
+      |> assign(:offer_requests, socket.assigns.offer_requests ++ [request])
     }
   end
 end
