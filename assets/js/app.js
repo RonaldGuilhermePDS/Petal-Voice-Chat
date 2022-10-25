@@ -1,53 +1,22 @@
-// We import the CSS which is extracted to its own file by esbuild.
-import Alpine from 'alpinejs';
-window.Alpine = Alpine;
-Alpine.start();
-
-// If you want to use Phoenix channels, run `mix help phx.gen.channel`
-// to get started and then uncomment the line below.
-// import "./user_socket.js"
-
-// You can include dependencies in two ways.
-//
-// The simplest option is to put them in assets/vendor and
-// import them using relative paths:
-//
-//     import "../vendor/some-package.js"
-//
-// Alternatively, you can `npm install some-package --prefix assets` and import
-// them using a path starting with the package name:
-//
-//     import "some-package"
-//
-
-// Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
-// Establish Phoenix Socket and LiveView configuration.
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-// Establish Stream
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-async function initStream() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true, width: "1280"})
-    localStream = stream
-    document.getElementById("local-video").srcObject = stream
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-let Hooks = {}
-Hooks.JoinCall = {
-  mounted() {
-    initStream()
-  }
-}
-
 var users = {}
+var localStream
+
+async function initStream () {
+  const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true, width: "1280"})
+  localStream = stream
+  document.getElementById("local-video").srcObject = stream
+}
 
 function addUserConnection(userUuid) {
   if (users[userUuid] === undefined) {
@@ -56,23 +25,13 @@ function addUserConnection(userUuid) {
     }
   }
 
-  return users
+  return users;
 }
 
 function removeUserConnection(userUuid) {
   delete users[userUuid]
 
-  return users
-}
-
-Hooks.InitUser = {
-  mounted () {
-    addUserConnection(this.el.dataset.userUuid)
-  },
-
-  destroyed () {
-    removeUserConnection(this.el.dataset.userUuid)
-  }
+  return users;
 }
 
 function createPeerConnection(lv, fromUser, offer) {
@@ -103,18 +62,14 @@ function createPeerConnection(lv, fromUser, offer) {
 
   if (offer === undefined) {
     newPeerConnection.onnegotiationneeded = async () => {
-      try {
-        newPeerConnection.createOffer()
-          .then((offer) => {
-            newPeerConnection.setLocalDescription(offer)
-            console.log("Sending this OFFER to the requester:", offer)
-            lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
-          })
-          .catch((err) => console.log(err))
-      }
-      catch (error) {
-        console.log(error)
-      }
+      
+    newPeerConnection.createOffer()
+      .then((offer) => {
+        newPeerConnection.setLocalDescription(offer)
+        console.log("Sending this OFFER to the requester:", offer)
+        lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
+      })
+      .catch((err) => console.log(err))
     }
   }
 
@@ -126,10 +81,19 @@ function createPeerConnection(lv, fromUser, offer) {
   return newPeerConnection;
 }
 
+let Hooks = {}
+Hooks.JoinCall = {
+  mounted() {
+    initStream()
+  }
+}
+
 Hooks.HandleOfferRequest = {
   mounted () {
-    console.log("new offer request from", this.el.dataset.fromUserUuid)
     let fromUser = this.el.dataset.fromUserUuid
+
+    console.log("new offer request from", fromUser)
+
     createPeerConnection(this, fromUser)
   }
 }
@@ -175,19 +139,22 @@ Hooks.HandleAnswer = {
   }
 }
 
-// Show progress bar on live navigation and form submits
+Hooks.InitUser = {
+  mounted () {
+    addUserConnection(this.el.dataset.userUuid)
+  },
+
+  destroyed () {
+    removeUserConnection(this.el.dataset.userUuid)
+  }
+}
+
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
-// Create new instance of Live Socket
 let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}})
 
-// connect if there are any LiveViews on the page
 liveSocket.connect()
 
-// expose liveSocket on window for web console debug logs and latency simulation:
-// >> liveSocket.enableDebug()
-// >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
-// >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
