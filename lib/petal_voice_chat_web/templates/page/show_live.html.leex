@@ -30,28 +30,24 @@
       <div id="offer-requests">
         <%= for request <- @offer_requests do %>
           <span id="<%= request.from_user.uuid %>" phx-hook="HandleOfferRequest" data-from-user-uuid="<%= request.from_user.uuid %>"></span>
-          <h1>Request</h1>
         <% end %>
       </div>
 
       <div id="sdp-offers">
         <%= for sdp_offer <- @sdp_offers do %>
           <span id="<%= sdp_offer["from_user"] %>" phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"></span>
-          <h1>Request</h1>
         <% end %>
       </div>
 
       <div id="sdp-answers">
         <%= for answer <- @answers do %>
           <span id="<%= answer["from_user"] %>" phx-hook="HandleAnswer" data-from-user-uuid="<%= answer["from_user"] %>" data-sdp="<%= answer["description"]["sdp"] %>"></span>
-          <h1>Request</h1>
         <% end %>
       </div>
 
       <div id="ice-candidates">
         <%= for ice_candidate_offer <- @ice_candidate_offers do %>
           <span id="<%= ice_candidate_offer["from_user"] %>" phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"></span>
-          <h1>Request</h1>
         <% end %>
       </div>
     </div>
