@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "deploy": "NODE_ENV=production tailwindcss --postcss --minify -i css/app.css -o ../priv/static/assets/app.css"
+    "deploy": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
   },
   "keywords": [],
   "dependencies": {
@@ -12,8 +13,15 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.2",
     "autoprefixer": "^10.4.4",
+    "copy-webpack-plugin": "^5.1.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss": "^8.4.12",
     "postcss-import": "^14.1.0",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "terser-webpack-plugin": "^2.3.2",
+    "webpack": "4.41.5",
+    "webpack-cli": "^3.3.2"
   }
 }
