@@ -72,4 +72,3 @@ defmodule PetalVoiceChat.MixProject do
     ]
   end
 end
-s
